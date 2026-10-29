@@ -1,0 +1,5587 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "pension-practitioner-frontend",
+    "version": "0.x",
+    "description": "Server-rendered GOV.UK frontend for registering, amending and deregistering Pension Scheme Practitioners (PSPs). Every page returns HTML; form posts are `application/x-www-form-urlencoded` and answer with a 303 redirect (Post/Redirect/Get) or re-render the form with 400. Derived from conf/*.routes and the controllers."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8208"
+    }
+  ],
+  "security": [
+    {
+      "mdtpSession": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Entry and start"
+    },
+    {
+      "name": "Registration \u2013 organisation triage"
+    },
+    {
+      "name": "Registration \u2013 company"
+    },
+    {
+      "name": "Registration \u2013 partnership"
+    },
+    {
+      "name": "Registration \u2013 individual"
+    },
+    {
+      "name": "Amend practitioner details"
+    },
+    {
+      "name": "Deregistration"
+    },
+    {
+      "name": "Session and language"
+    },
+    {
+      "name": "Information and stop pages"
+    },
+    {
+      "name": "Platform"
+    },
+    {
+      "name": "Test only"
+    }
+  ],
+  "paths": {
+    "/pension-scheme-practitioner/register/individual/what-you-will-need": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "What you will need (individual)",
+        "operationId": "individualWhatYouWillNeedOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/are-you-uk-resident": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Are you UK resident?",
+        "operationId": "individualAreYouUKResidentOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save answer",
+        "operationId": "individualAreYouUKResidentOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/change-are-you-uk-resident": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Are you UK resident? (check/change mode)",
+        "operationId": "individualAreYouUKResidentOnPageLoadChange",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save answer (check/change mode)",
+        "operationId": "individualAreYouUKResidentOnSubmitChange",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/is-this-you": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Is this you? \u2013 calls register-with-id (individual, NINO from auth) unless cached",
+        "operationId": "individualIsThisYouOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save answer",
+        "operationId": "individualIsThisYouOnSubmit",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/change/is-this-you": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Is this you? \u2013 calls register-with-id (individual, NINO from auth) unless cached (check/change mode)",
+        "operationId": "individualIsThisYouOnPageLoadChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save answer (check/change mode)",
+        "operationId": "individualIsThisYouOnSubmitChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/you-need-to-tell-hmrc": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Tell HMRC about changed personal details",
+        "operationId": "individualYouNeedToTellHMRCOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/use-address-for-contact": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Use this address for contact?",
+        "operationId": "individualUseAddressForContactOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Use this address for contact?",
+        "operationId": "individualUseAddressForContactOnPageLoadViaPost",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.\n\n\u26a0\ufe0f This POST route is bound to `onPageLoad`: the submitted form is ignored and the page is re-rendered. The page's own form posts to the change-mode URL instead.",
+        "requestBody": {
+          "required": true,
+          "description": "Ignored.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/change/use-address-for-contact": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Use this address for contact? (check/change mode)",
+        "operationId": "individualUseAddressForContactOnPageLoadChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save answer (check/change mode)",
+        "operationId": "individualUseAddressForContactOnSubmitChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/contact-details/contact-email": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Contact email (redirects unless UK resident)",
+        "operationId": "individualIndividualEmailOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save email",
+        "operationId": "individualIndividualEmailOnSubmit",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Trimmed; must match the restrictive RFC-5322-style email regex. No length check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/contact-details/change-contact-email": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Contact email (redirects unless UK resident) (check/change mode)",
+        "operationId": "individualIndividualEmailOnPageLoadChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save email (check/change mode)",
+        "operationId": "individualIndividualEmailOnSubmitChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Trimmed; must match the restrictive RFC-5322-style email regex. No length check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/contact-details/contact-phone": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Contact phone",
+        "operationId": "individualIndividualPhoneOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save phone",
+        "operationId": "individualIndividualPhoneOnSubmit",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "pattern": "^[0-9 ()+--]{1,24}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/contact-details/change-contact-phone": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Contact phone (check/change mode)",
+        "operationId": "individualIndividualPhoneOnPageLoadChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save phone (check/change mode)",
+        "operationId": "individualIndividualPhoneOnSubmitChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "pattern": "^[0-9 ()+--]{1,24}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/addresses/postcode-individual": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Contact address postcode",
+        "operationId": "individualIndividualPostcodeOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Look up postcode (address-lookup)",
+        "operationId": "individualIndividualPostcodeOnSubmit",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).\n\nA lookup returning no usable addresses re-renders the form with 400.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Upper-cased, repeated spaces collapsed, must match `^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$`; a space is inserted before the inward code."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/addresses/change-postcode-individual": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Contact address postcode (check/change mode)",
+        "operationId": "individualIndividualPostcodeOnPageLoadChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Look up postcode (address-lookup) (check/change mode)",
+        "operationId": "individualIndividualPostcodeOnSubmitChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).\n\nA lookup returning no usable addresses re-renders the form with 400.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Upper-cased, repeated spaces collapsed, must match `^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$`; a space is inserted before the inward code."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/addresses/address-results-individual": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Select address from lookup results",
+        "operationId": "individualIndividualAddressListOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save selected address",
+        "operationId": "individualIndividualAddressListOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "integer",
+                    "description": "Zero-based index into the cached postcode-lookup results. No range check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/addresses/change-address-results-individual": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Select address from lookup results (check/change mode)",
+        "operationId": "individualIndividualAddressListOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save selected address (check/change mode)",
+        "operationId": "individualIndividualAddressListOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "integer",
+                    "description": "Zero-based index into the cached postcode-lookup results. No range check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/addresses/address-manual-individual": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Enter contact address manually",
+        "operationId": "individualIndividualContactAddressOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save contact address",
+        "operationId": "individualIndividualContactAddressOnSubmit",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "line1",
+                  "line2",
+                  "country"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "line1": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line2": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line3": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line4": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "description": "Required and UK-format when country is GB; otherwise \u2264 10 chars."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Must be a code from the canonical country list."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/addresses/change-address-manual-individual": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Enter contact address manually (check/change mode)",
+        "operationId": "individualIndividualContactAddressOnPageLoadChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Save contact address (check/change mode)",
+        "operationId": "individualIndividualContactAddressOnSubmitChange",
+        "description": "Auth: Signed in; Organisation; confidence level 250 (IV uplift).",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "line1",
+                  "line2",
+                  "country"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "line1": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line2": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line3": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line4": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "description": "Required and UK-format when country is GB; otherwise \u2264 10 chars."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Must be a code from the canonical country list."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/check-your-answers-individual": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Check your answers",
+        "operationId": "individualCheckYourAnswersOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/declaration": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Declaration",
+        "operationId": "individualDeclarationOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Subscribe PSP, enrol, send email",
+        "operationId": "individualDeclarationOnSubmit",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.\n\nNo form is bound; any fields other than the CSRF token are ignored.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/registration-successful": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Registration confirmation; clears journey cache",
+        "operationId": "individualConfirmationOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/outside-eu-eea": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Address outside EU/EEA stop page",
+        "operationId": "individualOutsideEuEeaOnPageLoad",
+        "description": "Auth: Signed in; Organisation; confidence level 250; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/individual/non-uk-practitioner": {
+      "get": {
+        "tags": [
+          "Registration \u2013 individual"
+        ],
+        "summary": "Non-UK individuals cannot register online (stop page)",
+        "operationId": "individualNonUKPractitionerOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/can-hmrc-use-this-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Can HMRC use this address for contact?",
+        "operationId": "companyCompanyUseSameAddressOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save answer",
+        "operationId": "companyCompanyUseSameAddressOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/addresses/postcode": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Contact address postcode",
+        "operationId": "companyCompanyPostcodeOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Look up postcode (address-lookup)",
+        "operationId": "companyCompanyPostcodeOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.\n\nA lookup returning no usable addresses re-renders the form with 400.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Upper-cased, repeated spaces collapsed, must match `^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$`; a space is inserted before the inward code."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/addresses/change-postcode": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Contact address postcode (check/change mode)",
+        "operationId": "companyCompanyPostcodeOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Look up postcode (address-lookup) (check/change mode)",
+        "operationId": "companyCompanyPostcodeOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.\n\nA lookup returning no usable addresses re-renders the form with 400.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Upper-cased, repeated spaces collapsed, must match `^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$`; a space is inserted before the inward code."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/addresses/address-results": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Select address from lookup results",
+        "operationId": "companyCompanyAddressListOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save selected address",
+        "operationId": "companyCompanyAddressListOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "integer",
+                    "description": "Zero-based index into the cached postcode-lookup results. No range check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/addresses/change-address-results": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Select address from lookup results (check/change mode)",
+        "operationId": "companyCompanyAddressListOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save selected address (check/change mode)",
+        "operationId": "companyCompanyAddressListOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "integer",
+                    "description": "Zero-based index into the cached postcode-lookup results. No range check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/addresses/enter-contact-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Enter contact address manually",
+        "operationId": "companyCompanyContactAddressOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save contact address",
+        "operationId": "companyCompanyContactAddressOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "line1",
+                  "line2",
+                  "country"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "line1": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line2": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line3": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line4": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "description": "Required and UK-format when country is GB; otherwise \u2264 10 chars."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Must be in the canonical country list AND equal `GB`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/addresses/change-contact-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Enter contact address manually (check/change mode)",
+        "operationId": "companyCompanyContactAddressOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save contact address (check/change mode)",
+        "operationId": "companyCompanyContactAddressOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "line1",
+                  "line2",
+                  "country"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "line1": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line2": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line3": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line4": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "description": "Required and UK-format when country is GB; otherwise \u2264 10 chars."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Must be in the canonical country list AND equal `GB`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/business-utr": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Company UTR",
+        "operationId": "companyBusinessUTROnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save UTR",
+        "operationId": "companyBusinessUTROnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Spaces stripped, then must match `^\\d{10}$`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/org-name": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Company name",
+        "operationId": "companyCompanyNameOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save name (sets nameChange in variation)",
+        "operationId": "companyCompanyNameOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Trimmed; only max length 105 is checked."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/change-org-name": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Company name (check/change mode)",
+        "operationId": "companyCompanyNameOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save name (sets nameChange in variation) (check/change mode)",
+        "operationId": "companyCompanyNameOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Trimmed; only max length 105 is checked."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/confirm-name": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Confirm company name",
+        "operationId": "companyConfirmNameOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save answer",
+        "operationId": "companyConfirmNameOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/confirm-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Confirm registered address \u2013 calls register-with-id (organisation) on page load",
+        "operationId": "companyConfirmAddressOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Confirm/reject matched address",
+        "operationId": "companyConfirmAddressOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/contact-details/contact-email": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Contact email",
+        "operationId": "companyCompanyEmailOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save email",
+        "operationId": "companyCompanyEmailOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Trimmed; must match the restrictive RFC-5322-style email regex. No length check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/contact-details/change-contact-email": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Contact email (check/change mode)",
+        "operationId": "companyCompanyEmailOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save email (check/change mode)",
+        "operationId": "companyCompanyEmailOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Trimmed; must match the restrictive RFC-5322-style email regex. No length check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/contact-details/contact-phone": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Contact phone",
+        "operationId": "companyCompanyPhoneOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save phone",
+        "operationId": "companyCompanyPhoneOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "pattern": "^[0-9 ()+--]{1,24}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/contact-details/change-contact-phone": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Contact phone (check/change mode)",
+        "operationId": "companyCompanyPhoneOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save phone (check/change mode)",
+        "operationId": "companyCompanyPhoneOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "pattern": "^[0-9 ()+--]{1,24}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/check-your-answers": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Check your answers",
+        "operationId": "companyCheckYourAnswersOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/declaration": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Declaration",
+        "operationId": "companyDeclarationOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Subscribe PSP, enrol, send email",
+        "operationId": "companyDeclarationOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.\n\nNo form is bound; any fields other than the CSRF token are ignored.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/registration-successful": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Registration confirmation; clears journey cache",
+        "operationId": "companyConfirmationOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/addresses/enter-registered-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Enter registered address",
+        "operationId": "companyCompanyEnterRegisteredAddressOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save registered address (may call register-without-id)",
+        "operationId": "companyCompanyEnterRegisteredAddressOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "line1",
+                  "line2",
+                  "country"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "line1": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line2": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line3": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line4": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "description": "Required and UK-format when country is GB; otherwise \u2264 10 chars."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Must be in the canonical country list AND equal `GB`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/addresses/change-enter-registered-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Enter registered address (check/change mode)",
+        "operationId": "companyCompanyEnterRegisteredAddressOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save registered address (may call register-without-id) (check/change mode)",
+        "operationId": "companyCompanyEnterRegisteredAddressOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "line1",
+                  "line2",
+                  "country"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "line1": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line2": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line3": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line4": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "description": "Required and UK-format when country is GB; otherwise \u2264 10 chars."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Must be in the canonical country list AND equal `GB`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/company/is-company-in-uk": {
+      "get": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Is the company registered in the UK?",
+        "operationId": "companyIsCompanyRegisteredInUkOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 company"
+        ],
+        "summary": "Save answer",
+        "operationId": "companyIsCompanyRegisteredInUkOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/business-utr": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Partnership UTR",
+        "operationId": "partnershipBusinessUTROnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save UTR",
+        "operationId": "partnershipBusinessUTROnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Spaces stripped, then must match `^\\d{10}$`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/org-name": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Partnership name",
+        "operationId": "partnershipPartnershipNameOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save name (sets nameChange in variation)",
+        "operationId": "partnershipPartnershipNameOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Trimmed; only max length 105 is checked."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/change-org-name": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Partnership name (check/change mode)",
+        "operationId": "partnershipPartnershipNameOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save name (sets nameChange in variation) (check/change mode)",
+        "operationId": "partnershipPartnershipNameOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "maxLength": 105,
+                    "description": "Trimmed; only max length 105 is checked."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/confirm-name": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Confirm partnership name",
+        "operationId": "partnershipConfirmNameOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save answer",
+        "operationId": "partnershipConfirmNameOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/confirm-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Confirm registered address \u2013 calls register-with-id (organisation) on page load",
+        "operationId": "partnershipConfirmAddressOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Confirm/reject matched address",
+        "operationId": "partnershipConfirmAddressOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/can-hmrc-use-this-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Can HMRC use this address for contact?",
+        "operationId": "partnershipPartnershipUseSameAddressOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save answer",
+        "operationId": "partnershipPartnershipUseSameAddressOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/addresses/postcode": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Contact address postcode",
+        "operationId": "partnershipPartnershipPostcodeOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Look up postcode (address-lookup)",
+        "operationId": "partnershipPartnershipPostcodeOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.\n\nA lookup returning no usable addresses re-renders the form with 400.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Upper-cased, repeated spaces collapsed, must match `^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$`; a space is inserted before the inward code."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/addresses/change-postcode": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Contact address postcode (check/change mode)",
+        "operationId": "partnershipPartnershipPostcodeOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Look up postcode (address-lookup) (check/change mode)",
+        "operationId": "partnershipPartnershipPostcodeOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.\n\nA lookup returning no usable addresses re-renders the form with 400.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Upper-cased, repeated spaces collapsed, must match `^[A-Z]{1,2}[0-9][0-9A-Z]?\\s?[0-9][A-Z]{2}$`; a space is inserted before the inward code."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/addresses/address-results": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Select address from lookup results",
+        "operationId": "partnershipPartnershipAddressListOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save selected address",
+        "operationId": "partnershipPartnershipAddressListOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "integer",
+                    "description": "Zero-based index into the cached postcode-lookup results. No range check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/addresses/change-address-results": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Select address from lookup results (check/change mode)",
+        "operationId": "partnershipPartnershipAddressListOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save selected address (check/change mode)",
+        "operationId": "partnershipPartnershipAddressListOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "integer",
+                    "description": "Zero-based index into the cached postcode-lookup results. No range check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/addresses/enter-contact-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Enter contact address manually",
+        "operationId": "partnershipPartnershipContactAddressOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save contact address",
+        "operationId": "partnershipPartnershipContactAddressOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "line1",
+                  "line2",
+                  "country"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "line1": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line2": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line3": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line4": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "description": "Required and UK-format when country is GB; otherwise \u2264 10 chars."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Must be in the canonical country list AND equal `GB`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/addresses/change-contact-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Enter contact address manually (check/change mode)",
+        "operationId": "partnershipPartnershipContactAddressOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save contact address (check/change mode)",
+        "operationId": "partnershipPartnershipContactAddressOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "line1",
+                  "line2",
+                  "country"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "line1": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line2": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line3": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line4": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "description": "Required and UK-format when country is GB; otherwise \u2264 10 chars."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Must be in the canonical country list AND equal `GB`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/contact-details/contact-email": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Contact email",
+        "operationId": "partnershipPartnershipEmailOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save email",
+        "operationId": "partnershipPartnershipEmailOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Trimmed; must match the restrictive RFC-5322-style email regex. No length check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/contact-details/change-contact-email": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Contact email (check/change mode)",
+        "operationId": "partnershipPartnershipEmailOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save email (check/change mode)",
+        "operationId": "partnershipPartnershipEmailOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "description": "Trimmed; must match the restrictive RFC-5322-style email regex. No length check."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/contact-details/contact-phone": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Contact phone",
+        "operationId": "partnershipPartnershipPhoneOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save phone",
+        "operationId": "partnershipPartnershipPhoneOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "pattern": "^[0-9 ()+--]{1,24}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/contact-details/change-contact-phone": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Contact phone (check/change mode)",
+        "operationId": "partnershipPartnershipPhoneOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save phone (check/change mode)",
+        "operationId": "partnershipPartnershipPhoneOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "pattern": "^[0-9 ()+--]{1,24}$"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/check-your-answers": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Check your answers",
+        "operationId": "partnershipCheckYourAnswersOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/declaration": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Declaration",
+        "operationId": "partnershipDeclarationOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Subscribe PSP, enrol, send email",
+        "operationId": "partnershipDeclarationOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.\n\nNo form is bound; any fields other than the CSRF token are ignored.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/registration-successful": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Registration confirmation; clears journey cache",
+        "operationId": "partnershipConfirmationOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/addresses/enter-registered-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Enter registered address",
+        "operationId": "partnershipPartnershipEnterRegisteredAddressOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save registered address (may call register-without-id)",
+        "operationId": "partnershipPartnershipEnterRegisteredAddressOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "line1",
+                  "line2",
+                  "country"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "line1": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line2": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line3": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line4": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "description": "Required and UK-format when country is GB; otherwise \u2264 10 chars."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Must be in the canonical country list AND equal `GB`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/addresses/change-enter-registered-address": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Enter registered address (check/change mode)",
+        "operationId": "partnershipPartnershipEnterRegisteredAddressOnPageLoadChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save registered address (may call register-without-id) (check/change mode)",
+        "operationId": "partnershipPartnershipEnterRegisteredAddressOnSubmitChange",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "line1",
+                  "line2",
+                  "country"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "line1": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line2": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line3": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "line4": {
+                    "type": "string",
+                    "maxLength": 35,
+                    "pattern": "^[A-Za-z0-9 \\-,.&'\\/]{1,35}$"
+                  },
+                  "postcode": {
+                    "type": "string",
+                    "description": "Required and UK-format when country is GB; otherwise \u2264 10 chars."
+                  },
+                  "country": {
+                    "type": "string",
+                    "description": "Must be in the canonical country list AND equal `GB`."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/partnership/is-partnership-in-uk": {
+      "get": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Is the partnership registered in the UK?",
+        "operationId": "partnershipIsPartnershipRegisteredInUkOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 partnership"
+        ],
+        "summary": "Save answer",
+        "operationId": "partnershipIsPartnershipRegisteredInUkOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/remove-psp/remove-company": {
+      "get": {
+        "tags": [
+          "Deregistration"
+        ],
+        "summary": "Confirm stop being a practitioner (company) \u2013 checks can-deregister, loads minimal details",
+        "operationId": "deregisterCompanyConfirmDeregistrationOnPageLoad",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Deregistration"
+        ],
+        "summary": "Save answer",
+        "operationId": "deregisterCompanyConfirmDeregistrationOnSubmit",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/remove-psp/deauthorise-from-schemes": {
+      "get": {
+        "tags": [
+          "Information and stop pages"
+        ],
+        "summary": "Cannot stop being a practitioner while authorised on schemes",
+        "operationId": "deregisterCannotDeregisterOnPageLoad",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/remove-psp/date-removed-company": {
+      "get": {
+        "tags": [
+          "Deregistration"
+        ],
+        "summary": "Deregistration date (company) \u2013 loads application date",
+        "operationId": "deregisterCompanyDeregistrationDateOnPageLoad",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Deregistration"
+        ],
+        "summary": "Deregister, audit, de-enrol, email",
+        "operationId": "deregisterCompanyDeregistrationDateOnSubmit",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "deregistrationDate.day",
+                  "deregistrationDate.month",
+                  "deregistrationDate.year"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "deregistrationDate.day": {
+                    "type": "integer"
+                  },
+                  "deregistrationDate.month": {
+                    "type": "integer"
+                  },
+                  "deregistrationDate.year": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/remove-psp/success-company": {
+      "get": {
+        "tags": [
+          "Deregistration"
+        ],
+        "summary": "Deregistration success (company)",
+        "operationId": "deregisterCompanySuccessOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/remove-psp/remove": {
+      "get": {
+        "tags": [
+          "Deregistration"
+        ],
+        "summary": "Confirm stop being a practitioner (individual) \u2013 checks can-deregister, loads minimal details",
+        "operationId": "deregisterIndividualConfirmDeregistrationOnPageLoad",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Deregistration"
+        ],
+        "summary": "Save answer",
+        "operationId": "deregisterIndividualConfirmDeregistrationOnSubmit",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/remove-psp/date-removed": {
+      "get": {
+        "tags": [
+          "Deregistration"
+        ],
+        "summary": "Deregistration date (individual) \u2013 loads application date",
+        "operationId": "deregisterIndividualDeregistrationDateOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Deregistration"
+        ],
+        "summary": "Deregister, audit, de-enrol, email",
+        "operationId": "deregisterIndividualDeregistrationDateOnSubmit",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.\n\nGuard does not require the enrolment; `pspIdOrException` throws synchronously for a non-enrolled user, which becomes a 500.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "deregistrationDate.day",
+                  "deregistrationDate.month",
+                  "deregistrationDate.year"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "deregistrationDate.day": {
+                    "type": "integer"
+                  },
+                  "deregistrationDate.month": {
+                    "type": "integer"
+                  },
+                  "deregistrationDate.year": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/remove-psp/success-individual": {
+      "get": {
+        "tags": [
+          "Deregistration"
+        ],
+        "summary": "Deregistration success (individual)",
+        "operationId": "deregisterIndividualSuccessOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/{entityType}/you-need-to-tell-hmrc": {
+      "get": {
+        "tags": [
+          "Information and stop pages"
+        ],
+        "summary": "Tell HMRC about changed company/partnership details",
+        "operationId": "tellHMRCOnPageLoad",
+        "parameters": [
+          {
+            "name": "entityType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.\n\n`entityType` is used as a message key (e.g. `company`, `partnership`); any value is accepted.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/": {
+      "get": {
+        "tags": [
+          "Entry and start"
+        ],
+        "summary": "Service entry: redirects to the 'who are you registering' page",
+        "operationId": "loginOnPageLoad",
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/sign-out": {
+      "get": {
+        "tags": [
+          "Session and language"
+        ],
+        "summary": "Sign out: clears both journey caches and redirects to the feedback/sign-out URL",
+        "operationId": "signOutSignOut",
+        "description": "Auth: Optional: bearer token checked if present.",
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/keep-alive": {
+      "get": {
+        "tags": [
+          "Session and language"
+        ],
+        "summary": "Session keep-alive (plain `OK`)",
+        "operationId": "signOutKeepAlive",
+        "responses": {
+          "200": {
+            "description": "`OK`",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/assets/{file}": {
+      "get": {
+        "tags": [
+          "Session and language"
+        ],
+        "summary": "Static assets (versioned)",
+        "operationId": "assetsVersioned",
+        "parameters": [
+          {
+            "name": "file",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true,
+            "description": "One or more path segments separated by `/`."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset bytes.",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "304": {
+            "description": "Not modified (ETag)."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/language/{lang}": {
+      "get": {
+        "tags": [
+          "Session and language"
+        ],
+        "summary": "Switch language and redirect to the Referer header (fallback: PSP dashboard)",
+        "operationId": "languageSwitchSwitchToLanguage",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/this-service-has-been-reset": {
+      "get": {
+        "tags": [
+          "Information and stop pages"
+        ],
+        "summary": "Session expired / service reset page",
+        "operationId": "sessionExpiredOnPageLoad",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/unauthorised": {
+      "get": {
+        "tags": [
+          "Information and stop pages"
+        ],
+        "summary": "Unauthorised page",
+        "operationId": "unauthorisedOnPageLoad",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/cannot-register": {
+      "get": {
+        "tags": [
+          "Information and stop pages"
+        ],
+        "summary": "Agents cannot register page",
+        "operationId": "agentCannotRegisterOnPageLoad",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/need-an-organisation-account": {
+      "get": {
+        "tags": [
+          "Information and stop pages"
+        ],
+        "summary": "Individual-account users need an organisation account",
+        "operationId": "needAnOrganisationAccountOnPageLoad",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/do-not-have-access": {
+      "get": {
+        "tags": [
+          "Information and stop pages"
+        ],
+        "summary": "Assistant credential without enrolment page",
+        "operationId": "assistantNoAccessOnPageLoad",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/update-contact-address-psp": {
+      "get": {
+        "tags": [
+          "Amend practitioner details"
+        ],
+        "summary": "Prompt to update contact address (loads subscription details)",
+        "operationId": "updateContactAddressOnPageLoad",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/who-are-you-registering": {
+      "get": {
+        "tags": [
+          "Entry and start"
+        ],
+        "summary": "Choose company/partnership or individual",
+        "operationId": "whatTypeBusinessOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.\n\nOnly action that runs without the data-required step (creates journey answers if none).",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Entry and start"
+        ],
+        "summary": "Save registrant type, send PSPStartNew audit",
+        "operationId": "whatTypeBusinessOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.\n\nOnly action that runs without the data-required step (creates journey answers if none).",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "companyOrPartnership",
+                      "yourselfAsIndividual"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/what-you-will-need": {
+      "get": {
+        "tags": [
+          "Registration \u2013 organisation triage"
+        ],
+        "summary": "What you will need (organisation)",
+        "operationId": "registerWhatYouWillNeedOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/are-you-in-the-uk-company": {
+      "get": {
+        "tags": [
+          "Registration \u2013 organisation triage"
+        ],
+        "summary": "Is the organisation UK-based?",
+        "operationId": "registerAreYouUKCompanyOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 organisation triage"
+        ],
+        "summary": "Save answer",
+        "operationId": "registerAreYouUKCompanyOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "true",
+                      "false"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/business-type": {
+      "get": {
+        "tags": [
+          "Registration \u2013 organisation triage"
+        ],
+        "summary": "Business type",
+        "operationId": "registerBusinessTypeOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 organisation triage"
+        ],
+        "summary": "Save business type",
+        "operationId": "registerBusinessTypeOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "limitedCompany",
+                      "businessPartnership",
+                      "limitedPartnership",
+                      "limitedLiabilityPartnership",
+                      "unlimitedCompany",
+                      "overseasCompany"
+                    ],
+                    "description": "`overseasCompany` is accepted by the form although not offered as a radio option."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/business-details-not-found": {
+      "get": {
+        "tags": [
+          "Registration \u2013 organisation triage"
+        ],
+        "summary": "Business details not matched page",
+        "operationId": "registerBusinessDetailsNotFoundOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/register/what-is-business-registered-as": {
+      "get": {
+        "tags": [
+          "Registration \u2013 organisation triage"
+        ],
+        "summary": "Company or partnership (non-UK path)",
+        "operationId": "registerBusinessRegistrationTypeOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Registration \u2013 organisation triage"
+        ],
+        "summary": "Save registration type",
+        "operationId": "registerBusinessRegistrationTypeOnSubmit",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "value"
+                ],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  },
+                  "value": {
+                    "type": "string",
+                    "enum": [
+                      "company",
+                      "partnership"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "400": {
+            "$ref": "#/components/responses/FormErrors"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/practitioner-details": {
+      "get": {
+        "tags": [
+          "Amend practitioner details"
+        ],
+        "summary": "View practitioner details (loads subscription and minimal details)",
+        "operationId": "amendViewDetailsOnPageLoad",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/declare": {
+      "get": {
+        "tags": [
+          "Amend practitioner details"
+        ],
+        "summary": "Amendment declaration (only if amendments exist)",
+        "operationId": "amendDeclarationOnPageLoad",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Amend practitioner details"
+        ],
+        "summary": "Submit amendment, audit, send email",
+        "operationId": "amendDeclarationOnSubmit",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.\n\nNo form is bound; any fields other than the CSRF token are ignored.",
+        "requestBody": {
+          "required": true,
+          "description": "HTML form submission.",
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                  "csrfToken": {
+                    "type": "string",
+                    "description": "Play CSRF token (CSRF filter)."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "403": {
+            "$ref": "#/components/responses/CsrfFailure"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/success": {
+      "get": {
+        "tags": [
+          "Amend practitioner details"
+        ],
+        "summary": "Amendment confirmation; clears journey cache",
+        "operationId": "amendConfirmationOnPageLoad",
+        "description": "Auth: Signed in; Organisation; MUST hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/your-action-was-not-processed": {
+      "get": {
+        "tags": [
+          "Information and stop pages"
+        ],
+        "summary": "Upstream 5xx failure page",
+        "operationId": "yourActionWasNotProcessedOnPageLoad",
+        "description": "Auth: Signed in (User/Assistant); Organisation affinity only; no enrolment rule.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/pension-scheme-practitioner/cannot-register-practitioner": {
+      "get": {
+        "tags": [
+          "Information and stop pages"
+        ],
+        "summary": "Already an active practitioner (ACTIVE_PSPID) page",
+        "operationId": "cannotRegisterPractitionerOnPageLoad",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/register/non-uk-practitioner": {
+      "get": {
+        "tags": [
+          "Registration \u2013 organisation triage"
+        ],
+        "summary": "Non-UK organisations cannot register online (stop page)",
+        "operationId": "registerNonUKPractitionerOnPageLoad",
+        "description": "Auth: Signed in; Organisation; must NOT hold HMRC-PODSPP-ORG.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Page"
+          },
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          },
+          "500": {
+            "$ref": "#/components/responses/ServerError"
+          }
+        }
+      }
+    },
+    "/ping/ping": {
+      "get": {
+        "tags": [
+          "Platform"
+        ],
+        "summary": "Health check (bootstrap health.Routes)",
+        "operationId": "healthPing",
+        "responses": {
+          "200": {
+            "description": "Healthy (empty body)."
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/hmrc-frontend/assets/{file}": {
+      "get": {
+        "tags": [
+          "Platform"
+        ],
+        "summary": "hmrc-frontend static assets (play-frontend-hmrc hmrcfrontend.Routes)",
+        "operationId": "hmrcFrontendAssets",
+        "parameters": [
+          {
+            "name": "file",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "allowReserved": true,
+            "description": "One or more path segments separated by `/`."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Asset bytes."
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/hmrc-frontend/keep-alive": {
+      "get": {
+        "tags": [
+          "Platform"
+        ],
+        "summary": "hmrc-frontend keep-alive (play-frontend-hmrc hmrcfrontend.Routes)",
+        "operationId": "hmrcFrontendKeepAlive",
+        "responses": {
+          "200": {
+            "description": "OK."
+          }
+        },
+        "security": []
+      }
+    },
+    "/pension-scheme-practitioner/hmrc-frontend/language/{lang}": {
+      "get": {
+        "tags": [
+          "Platform"
+        ],
+        "summary": "hmrc-frontend language switch (play-frontend-hmrc hmrcfrontend.Routes)",
+        "operationId": "hmrcFrontendSwitchLanguage",
+        "parameters": [
+          {
+            "name": "lang",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "303": {
+            "$ref": "#/components/responses/Redirect"
+          }
+        },
+        "security": []
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "mdtpSession": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "mdtp",
+        "description": "MDTP session cookie carrying the Government Gateway bearer token; checked by the auth service."
+      }
+    },
+    "responses": {
+      "Page": {
+        "description": "HTML page.",
+        "content": {
+          "text/html": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Redirect": {
+        "description": "303 See Other. Next page in the journey, or an auth/eligibility redirect (login, IV uplift, unauthorised, agent/individual/assistant stop pages, PSP dashboard, administrator-or-practitioner chooser, 'you need to register', 'you must contact HMRC' for deceased flag, session expired).",
+        "headers": {
+          "Location": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "FormErrors": {
+        "description": "Form failed validation; page re-rendered with error summary.",
+        "content": {
+          "text/html": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "CsrfFailure": {
+        "description": "Missing/invalid CSRF token (Play CSRF filter; standard error template).",
+        "content": {
+          "text/html": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Not found page.",
+        "content": {
+          "text/html": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Unhandled exception or upstream failure without a mapped redirect; internal-server-error page with `Cache-Control: no-cache`.",
+        "content": {
+          "text/html": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
